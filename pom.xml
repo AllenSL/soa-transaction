@@ -9,7 +9,7 @@
         <version>2.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.gome.pop</groupId>
+    <groupId>com.asl</groupId>
     <artifactId>soa-transaction</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>soa-transaction</name>

@@ -1,4 +1,4 @@
-package com.gome.pop.soatransactionapi;
+package com.asl.soatransaction.annocation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
