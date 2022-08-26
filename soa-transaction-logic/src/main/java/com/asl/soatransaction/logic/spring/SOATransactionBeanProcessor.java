@@ -2,6 +2,10 @@ package com.asl.soatransaction.logic.spring;
 
 import com.asl.soatransaction.annotation.SOACommit;
 import com.asl.soatransaction.annotation.SOAService;
+import com.asl.soatransaction.logic.SOARollbackMeta;
+import com.asl.soatransaction.logic.exp.SOATransactionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,12 +18,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * dubbo接口调用类处理器
  * @author ansonglin
  */
 public class SOATransactionBeanProcessor implements ApplicationContextAware {
 
+    Logger LOGGER = LoggerFactory.getLogger(SOATransactionBeanProcessor.class);
     private ApplicationContext applicationContext;
-    private static final Map<String,String> map = new HashMap<>();
+    public static final Map<Method,SOARollbackMeta> METHOD_ROLLBACK_MAPPING = new HashMap<>();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -39,20 +45,32 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
                 Class cls =  this.getWithAnnotationClass(beanClz.getClass(),SOAService.class);
                 //获取接口中所有方法
                 Method[] methods = cls.getMethods();
-                for (Method method : methods) {
-                    if (method.isAnnotationPresent(SOACommit.class)) {
-                        SOACommit annotation = method.getAnnotation(SOACommit.class);
-                        String rollBackMethod = annotation.rollBackMethod();
-                        String args = annotation.args();
-                        int[] value = annotation.value();
-
+                    for (Method method : methods) {
+                        try {
+                            if (method.isAnnotationPresent(SOACommit.class)) {
+                                SOACommit annotation = method.getAnnotation(SOACommit.class);
+                                String rollBackMethodName = annotation.rollBackMethod();
+                                int[] value = annotation.value();
+                                this.checkRollMeta(rollBackMethodName);
+                                SOARollbackMeta rollbackMeta = new SOARollbackMeta(cls,rollBackMethodName,value);
+                                METHOD_ROLLBACK_MAPPING.put(method,rollbackMeta);
+                            }
+                        } catch (Exception e) {
+                            LOGGER.error("dubbo interface parse error " + cls + "."+method,e);
+                            throw new SOATransactionException(SOATransactionException.INTERFACE_PARSE_EXCEPTION,"dubbo interface parse error " + cls + "."+method,e);
+                        }
                     }
-                }
-                
             }
         }
     }
 
+
+    private void checkRollMeta(String rollBackMethodName) {
+        if (rollBackMethodName.isEmpty()) {
+            throw new SOATransactionException(SOATransactionException.CHECK_EXCEPTION,"rollBackMethod check error");
+        }
+
+    }
 
 
     public Class<?> getWithAnnotationClass(Class<?> clz, Class<? extends Annotation> annotationType){

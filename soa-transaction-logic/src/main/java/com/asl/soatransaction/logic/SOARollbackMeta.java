@@ -1,5 +1,7 @@
 package com.asl.soatransaction.logic;
 
+import java.util.Arrays;
+
 /**
  * 事务回滚元数据类
  * @author ansonglin
@@ -21,6 +23,12 @@ public class SOARollbackMeta {
      */
     private int[] args;
 
+    public SOARollbackMeta(Class<?> clz, String methodName, int[] args) {
+        this.clz = clz;
+        this.methodName = methodName;
+        Arrays.sort(args);
+        this.args = args;
+    }
 
     public Class<?> getClz() {
         return clz;

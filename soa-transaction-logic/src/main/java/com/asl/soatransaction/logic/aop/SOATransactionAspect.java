@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.Executors;
-
 /**
  * @author ansonglin
  */
@@ -19,7 +17,7 @@ import java.util.concurrent.Executors;
 public class SOATransactionAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(SOATransactionAspect.class);
-    private static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<>();
+    public static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<>();
 
     @Before("@annotation(com.asl.soatransaction.annotation.SOATransaction)")
     public void before(){

@@ -1,0 +1,1 @@
+transactionFilter=com.asl.soatransaction.logic.filter.SOATransactionFilter
