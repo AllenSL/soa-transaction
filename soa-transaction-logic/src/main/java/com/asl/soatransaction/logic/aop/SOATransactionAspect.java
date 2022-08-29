@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.asl.soatransaction.logic.CacheWrapper;
 import com.asl.soatransaction.logic.SOATransactionContext;
 import com.asl.soatransaction.logic.domain.SOATransactionFlag;
+import com.asl.soatransaction.logic.exp.SOATransactionException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -13,6 +14,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,10 +28,12 @@ import java.util.List;
 public class SOATransactionAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(SOATransactionAspect.class);
-    public static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<>();
+    public static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<SOATransactionFlag>();
     private CacheWrapper cacheWrapper;
-    SOATransactionAspect(CacheWrapper cacheWrapper){
+    private ApplicationContext applicationContext;
+    public SOATransactionAspect(CacheWrapper cacheWrapper, ApplicationContext applicationContext){
         this.cacheWrapper = cacheWrapper;
+        this.applicationContext = applicationContext;
     }
 
     @Before("@annotation(com.asl.soatransaction.annotation.SOATransaction)")
@@ -45,7 +49,7 @@ public class SOATransactionAspect {
      * @param joinPoint
      */
     @AfterThrowing(value = "@annotation(com.asl.soatransaction.annotation.SOATransaction)")
-    public void afterThrowing(JoinPoint joinPoint){
+    public void afterThrowing(JoinPoint joinPoint) throws IllegalAccessException {
         String methodName = joinPoint.getSignature().getName();
         SOATransactionFlag flag = threadLocal.get();
         if(ObjectUtils.isEmpty(flag)){
@@ -60,16 +64,26 @@ public class SOATransactionAspect {
                 List<SOATransactionContext.PerServiceContext> contextHolders = context.getContextHolders();
                 for (SOATransactionContext.PerServiceContext contextHolder : contextHolders) {
                     try {
-                        MethodUtils.invokeMethod(contextHolder.getClz(), contextHolder.getMethodName(), contextHolder.getArgs());
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                        Object target = applicationContext.getBean(contextHolder.getClz());
+                        MethodUtils.invokeMethod(target, contextHolder.getMethodName(), contextHolder.getArgs());
+                    } catch (NoSuchMethodException | InvocationTargetException e) {
+                        LOG.error("方法:【{}】,事务ID:【{}】事务回滚失败",methodName, txId,e);
+                        throw new SOATransactionException(SOATransactionException.ROLLBACK_EXCEPTION,String.format("方法:【%s】,事务ID:【%s】事务回滚失败",methodName, txId));
                     }
                 }
+                LOG.info("方法:【{}】,事务ID:【{}】事务回滚成功",methodName, txId);
+                this.after();
             }
+        }
+    }
+
+    private void after() {
+        SOATransactionFlag flag = threadLocal.get();
+        if(!ObjectUtils.isEmpty(flag)){
+            String txId = flag.getTxId();
+            cacheWrapper.del(txId);
+            threadLocal.remove();
+            LOG.info("删除事务txId=【{}】数据成功",txId);
         }
     }
 

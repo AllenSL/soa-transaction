@@ -12,7 +12,7 @@ public class SOATransactionContext {
     /**
      * 回调方法回滚链
      */
-    public List<SOATransactionContext.PerServiceContext> contextHolders = new ArrayList<>();
+    public List<SOATransactionContext.PerServiceContext> contextHolders = new ArrayList<SOATransactionContext.PerServiceContext>();
 
     public List<PerServiceContext> getContextHolders() {
         return contextHolders;

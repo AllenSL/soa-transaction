@@ -6,9 +6,19 @@ package com.asl.soatransaction.logic.exp;
  */
 public class SOATransactionException extends RuntimeException{
 
-    public static final int CHECK_EXCEPTION = 1;
-
+    /**
+     * 接口解析异常
+     */
     public static final int INTERFACE_PARSE_EXCEPTION = 0;
+    /**
+     * 检查异常
+     */
+    public static final int CHECK_EXCEPTION = 1;
+    /**
+     * 方法回滚异常
+     */
+    public static final int ROLLBACK_EXCEPTION = 2;
+
 
     /**
      * RpcException cannot be extended, use error code for exception type to keep compatibility

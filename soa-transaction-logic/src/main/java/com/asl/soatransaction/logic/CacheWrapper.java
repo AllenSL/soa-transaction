@@ -25,4 +25,8 @@ public class CacheWrapper {
     public void setex(String key,Object value,long seconds){
         stringRedisTemplate.opsForValue().set(key, JSON.toJSONString(value),seconds);
     }
+
+    public void del(String key){
+        stringRedisTemplate.delete(key);
+    }
 }
