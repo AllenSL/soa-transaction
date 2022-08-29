@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 事务标记注解
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SOATransaction {
