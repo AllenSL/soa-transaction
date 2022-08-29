@@ -37,7 +37,7 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
      */
     public void init(){
         Map<String, Object> beanMaps = applicationContext.getBeansWithAnnotation(SOAService.class);
-        if(ObjectUtils.isEmpty(beanMaps)){
+        if(!ObjectUtils.isEmpty(beanMaps)){
             Iterator<Map.Entry<String, Object>> iterator = beanMaps.entrySet().iterator();
             while (iterator.hasNext()){
                 Map.Entry<String, Object> bean = iterator.next();
