@@ -15,6 +15,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -22,6 +23,7 @@ import java.lang.reflect.Method;
  * SOATransactionFilter
  * @author ansonglin
  */
+@Component
 @Activate(group = {CommonConstants.CONSUMER})
 public class SOATransactionFilter implements Filter {
     /**
