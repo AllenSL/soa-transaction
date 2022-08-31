@@ -66,7 +66,12 @@ public class SOATransactionAspect {
                     try {
                         Object target = applicationContext.getBean(contextHolder.getClz());
                         MethodUtils.invokeMethod(target, contextHolder.getMethodName(), contextHolder.getArgs());
-                    } catch (NoSuchMethodException | InvocationTargetException e) {
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                        LOG.error("方法:【{}】,事务ID:【{}】事务回滚失败",methodName, txId,e);
+                        throw new SOATransactionException(SOATransactionException.ROLLBACK_EXCEPTION,String.format("方法:【%s】,事务ID:【%s】事务回滚失败",methodName, txId));
+                    } catch (NoSuchMethodException e ){
+                        e.printStackTrace();
                         LOG.error("方法:【{}】,事务ID:【{}】事务回滚失败",methodName, txId,e);
                         throw new SOATransactionException(SOATransactionException.ROLLBACK_EXCEPTION,String.format("方法:【%s】,事务ID:【%s】事务回滚失败",methodName, txId));
                     }

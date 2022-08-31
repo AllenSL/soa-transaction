@@ -30,11 +30,7 @@ public class SOATransactionFilter implements Filter {
 
     private CacheWrapper cacheWrapper;
 
-    public SOATransactionFilter(){
-
-    }
-
-    public SOATransactionFilter(CacheWrapper cacheWrapper){
+    public void setCacheWrapper(CacheWrapper cacheWrapper) {
         this.cacheWrapper = cacheWrapper;
     }
 
@@ -49,6 +45,7 @@ public class SOATransactionFilter implements Filter {
             Method method = MethodUtils.getAccessibleMethod(clz, methodName, invocation.getParameterTypes());
             SOARollbackMeta rollbackMeta = SOATransactionBeanProcessor.METHOD_ROLLBACK_MAPPING.get(method);
             int[] argsIndex = rollbackMeta.getArgs();
+            String rollBackMethodName = rollbackMeta.getMethodName();
             String json = cacheWrapper.get(txId);
 
             Object[] params = new Object[rollbackMeta.getArgs().length];
@@ -61,7 +58,7 @@ public class SOATransactionFilter implements Filter {
             }else {
                  context = new SOATransactionContext();
             }
-            context.addContextHolder(clz,methodName,params);
+            context.addContextHolder(clz,rollBackMethodName.trim(),params);
             cacheWrapper.setex(txId,context,EXPIRE_TIME);
         }
         return invoker.invoke(invocation);

@@ -5,7 +5,7 @@ import com.asl.soatransaction.logic.aop.SOATransactionAspect;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import redis.Gcache;
 
 /**
  * @author ansonglin
@@ -20,7 +20,7 @@ public class SOATransactionConfiguration {
     }
 
     @Bean
-    public CacheWrapper cacheWrapper(StringRedisTemplate stringRedisTemplate){
+    public CacheWrapper cacheWrapper(Gcache stringRedisTemplate){
         return new CacheWrapper(stringRedisTemplate);
     }
 }
