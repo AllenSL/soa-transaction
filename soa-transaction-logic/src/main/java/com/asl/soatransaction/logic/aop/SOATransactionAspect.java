@@ -28,7 +28,7 @@ import java.util.List;
 public class SOATransactionAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(SOATransactionAspect.class);
-    public static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<SOATransactionFlag>();
+    public static final ThreadLocal<SOATransactionFlag> threadLocal = new ThreadLocal<>();
     private CacheWrapper cacheWrapper;
     private ApplicationContext applicationContext;
     public SOATransactionAspect(CacheWrapper cacheWrapper, ApplicationContext applicationContext){

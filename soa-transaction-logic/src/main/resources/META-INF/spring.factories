@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.asl.soatransaction.logic.config.SOATransactionConfiguration
+

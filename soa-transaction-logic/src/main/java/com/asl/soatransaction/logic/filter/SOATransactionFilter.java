@@ -1,7 +1,6 @@
 package com.asl.soatransaction.logic.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.asl.soatransaction.annotation.SOAService;
 import com.asl.soatransaction.logic.CacheWrapper;
 import com.asl.soatransaction.logic.SOARollbackMeta;
 import com.asl.soatransaction.logic.SOATransactionContext;
@@ -15,7 +14,6 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -23,8 +21,7 @@ import java.lang.reflect.Method;
  * SOATransactionFilter
  * @author ansonglin
  */
-@Component
-@Activate(group = {CommonConstants.CONSUMER})
+@Activate(group = {CommonConstants.CONSUMER,CommonConstants.PROVIDER})
 public class SOATransactionFilter implements Filter {
     /**
      * 过期时间 60s*60*24=24h
@@ -32,6 +29,10 @@ public class SOATransactionFilter implements Filter {
     public static int EXPIRE_TIME = 86400;
 
     private CacheWrapper cacheWrapper;
+
+    public SOATransactionFilter(){
+
+    }
 
     public SOATransactionFilter(CacheWrapper cacheWrapper){
         this.cacheWrapper = cacheWrapper;
@@ -45,7 +46,7 @@ public class SOATransactionFilter implements Filter {
             Class<?> clz = invoker.getInterface();
             String methodName = invocation.getMethodName();
             Object[] arguments = invocation.getArguments();
-            Method method = MethodUtils.getAccessibleMethod(clz, methodName, SOAService.class);
+            Method method = MethodUtils.getAccessibleMethod(clz, methodName, invocation.getParameterTypes());
             SOARollbackMeta rollbackMeta = SOATransactionBeanProcessor.METHOD_ROLLBACK_MAPPING.get(method);
             int[] argsIndex = rollbackMeta.getArgs();
             String json = cacheWrapper.get(txId);
