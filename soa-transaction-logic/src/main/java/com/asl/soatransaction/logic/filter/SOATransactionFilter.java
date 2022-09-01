@@ -58,7 +58,7 @@ public class SOATransactionFilter implements Filter {
             }else {
                  context = new SOATransactionContext();
             }
-            context.addContextHolder(clz,rollBackMethodName.trim(),params);
+            context.addContextHolder(clz,rollBackMethodName,params);
             cacheWrapper.setex(txId,context,EXPIRE_TIME);
         }
         return invoker.invoke(invocation);
