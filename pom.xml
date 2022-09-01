@@ -16,6 +16,7 @@
     <modules>
         <module>soa-transaction-api</module>
         <module>soa-transaction-logic</module>
+        <module>soa-transaction-demo</module>
     </modules>
 
 
