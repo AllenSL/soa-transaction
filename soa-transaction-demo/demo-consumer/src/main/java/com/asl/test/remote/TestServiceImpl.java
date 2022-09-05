@@ -1,8 +1,8 @@
 package com.asl.test.remote;
 
 import com.asl.soatransaction.annotation.SOATransaction;
+import com.asl.test.remote.service.TestService;
 import com.asl.test.service.RemoteTestService;
-import com.test.asl.test.remote.service.TestService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
 
