@@ -14,7 +14,7 @@ public class RemoteTestServiceImpl implements RemoteTestService {
 
     @Override
     public String revertTest1(String s, Integer age) {
-        System.out.println("异常回滚请求到啦: "+s + " age: "+ age);
+        System.out.println("revertTest1异常回滚请求到啦: "+s + " age: "+ age);
         return "revertTest1";
     }
 
@@ -26,6 +26,7 @@ public class RemoteTestServiceImpl implements RemoteTestService {
 
     @Override
     public String revertTest2(String name) {
+        System.out.println("revertTest2我请求到test2啦哈哈哈s: "+" age: "+ name);
         return "revertTest2"+name;
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestServiceImpl implements TestService {
 
-   @Reference
+   @Reference(version = "1.0.0")
    RemoteTestService remoteTestService;
 
     @Override
