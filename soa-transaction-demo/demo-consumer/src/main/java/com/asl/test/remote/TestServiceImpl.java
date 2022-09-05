@@ -15,7 +15,8 @@ public class TestServiceImpl implements TestService {
     @Override
     @SOATransaction
     public String clientTest() {
-        String ssssss = remoteTestService.test1("ssssss", 1);
+        String ssssss = remoteTestService.test1("方法1", 1);
+        remoteTestService.test2("方法2",2);
         int a = 2/0;
         return ssssss;
     }

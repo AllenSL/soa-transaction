@@ -28,26 +28,12 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
                 <configuration>
-                    <!--fork :  如果没有该项配置devtools不会起作用，即应用不会restart -->
-                    <fork>true</fork>
-                    <!--支持静态文件热部署-->
-                    <addResources>true</addResources>
-                    <!-- 当项目中引用第三方jar 需要设置属性为true-->
-                    <includeSystemScope>true</includeSystemScope>
-                </configuration>
-            </plugin>
-            <!-- mybatis generator 自动生成代码插件 -->
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.1</version>
-                <configuration>
-                    <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,7 +1,7 @@
 package com.asl.test.remote;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.asl.test.service.RemoteTestService;
+import org.apache.dubbo.config.annotation.Service;
 
 @Service
 public class RemoteTestServiceImpl implements RemoteTestService {
@@ -25,7 +25,7 @@ public class RemoteTestServiceImpl implements RemoteTestService {
     }
 
     @Override
-    public String test3() {
-        return null;
+    public String revertTest2(String name) {
+        return "revertTest2"+name;
     }
 }

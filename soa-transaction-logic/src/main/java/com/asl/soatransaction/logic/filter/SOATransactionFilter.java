@@ -1,7 +1,6 @@
 package com.asl.soatransaction.logic.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.asl.soatransaction.annotation.SOACommit;
 import com.asl.soatransaction.logic.CacheWrapper;
 import com.asl.soatransaction.logic.SOARollbackMeta;
 import com.asl.soatransaction.logic.SOATransactionContext;
@@ -48,10 +47,10 @@ public class SOATransactionFilter implements Filter {
             String methodName = invocation.getMethodName();
             Object[] arguments = invocation.getArguments();
             Method method = MethodUtils.getAccessibleMethod(clz, methodName, invocation.getParameterTypes());
-            if(!method.isAnnotationPresent(SOACommit.class)){
-                LOG.debug("soaTransaction Filter execute no soaTransaction method:【{}】",method.getName());
-                return invoker.invoke(invocation);
-            }
+//            if(!method.isAnnotationPresent(SOACommit.class)){
+//                LOG.debug("soaTransaction Filter execute no soaTransaction method:【{}】",method.getName());
+//                return invoker.invoke(invocation);
+//            }
             SOARollbackMeta rollbackMeta = SOATransactionBeanProcessor.METHOD_ROLLBACK_MAPPING.get(method);
             if(ObjectUtils.isEmpty(rollbackMeta)){
                 throw new SOATransactionException(SOATransactionException.UNKNOWN_ROLLBACK_META_EXCEPTION,String.format("未找到soaTransaction方法:【%s】元数据",method));

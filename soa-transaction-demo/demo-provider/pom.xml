@@ -29,40 +29,24 @@
     </properties>
 
     <dependencies>
+        <!--zookeeper 注册中心客户端引入 使用的是curator客户端 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.5.5.g1-SNAPSHOT</version>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-dependencies-zookeeper</artifactId>
+            <version>2.7.6</version>
+            <type>pom</type>
             <exclusions>
                 <exclusion>
-                    <artifactId>javassist</artifactId>
-                    <groupId>org.javassist</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-lang</artifactId>
-                    <groupId>commons-lang</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j</artifactId>
-                    <groupId>log4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
                     <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- spring cloud -->
+        <!-- dubbo 2.7.x引入-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>Finchley.SR1</version>
-            <type>pom</type>
-            <scope>import</scope>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>2.7.6</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,86 +58,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-client</artifactId>
-            <version>4.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
-            <classifier>jdk15</classifier>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <groupId>com.asl.test</groupId>
+            <artifactId>demo-interface</artifactId>
+            <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.gome.cloud.openplatform</groupId>
-            <artifactId>gmos-common-diamond</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.gome.opencloud</groupId>
-            <artifactId>gmos-event-client</artifactId>
-            <version>7.0.0.x-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.gome.opencloud</groupId>
-            <artifactId>gmos-event-consumer</artifactId>
-            <version>7.0.0.x-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.gome.opencloud</groupId>
-            <artifactId>gmos-event-logger-kafka</artifactId>
-            <version>7.0.0.x-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>cn.com.gome.opencloud</groupId>
-            <artifactId>gmos-event-publisher</artifactId>
-            <version>7.0.0.x-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>test-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.21.0-GA</version>
-        </dependency>
-        <dependency>
-            <groupId>com.asl</groupId>
-            <artifactId>soa-transaction-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-                <dependency>
-                    <groupId>com.gome.architect</groupId>
-                    <artifactId>simple-soatransaction-api</artifactId>
-                    <version>0.0.4-SNAPSHOT</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.gome.architect</groupId>
-                    <artifactId>simple-soatransaction</artifactId>
-                    <version>0.0.5-SNAPSHOT</version>
-                </dependency>
     </dependencies>
 
     <profiles>

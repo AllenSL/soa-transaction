@@ -3,12 +3,14 @@ package com.asl.soatransaction.logic.aop;
 import com.alibaba.fastjson.JSONObject;
 import com.asl.soatransaction.logic.CacheWrapper;
 import com.asl.soatransaction.logic.SOATransactionContext;
+import com.asl.soatransaction.logic.SOATransactionStatus;
 import com.asl.soatransaction.logic.domain.SOATransactionFlag;
 import com.asl.soatransaction.logic.exp.SOATransactionException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -52,6 +54,7 @@ public class SOATransactionAspect {
     public void afterThrowing(JoinPoint joinPoint) throws IllegalAccessException {
         String methodName = joinPoint.getSignature().getName();
         SOATransactionFlag flag = threadLocal.get();
+        flag.setStatus(SOATransactionStatus.ROLLBACK);
         if(ObjectUtils.isEmpty(flag)){
             LOG.error("方法:【{}】,事务标记threadLocal为空", methodName);
         }else {
@@ -81,6 +84,7 @@ public class SOATransactionAspect {
         }
     }
 
+    @After("@annotation(com.asl.soatransaction.annotation.SOATransaction)")
     private void after() {
         SOATransactionFlag flag = threadLocal.get();
         if(!ObjectUtils.isEmpty(flag)){

@@ -16,7 +16,13 @@ public interface RemoteTestService {
      @SOARollBack
      String revertTest1(String name,Integer age);
 
+
+     @SOACommit(
+             rollBackMethod = "revertTest2",
+             value = {0}
+     )
      String test2(String name,Integer age);
 
-     String test3();
+     @SOARollBack
+     String revertTest2(String name);
 }
