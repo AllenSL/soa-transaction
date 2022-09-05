@@ -8,14 +8,14 @@ public class RemoteTestServiceImpl implements RemoteTestService {
 
     @Override
     public String test1(String s, Integer age) {
-        System.out.println("我请求到啦哈哈哈s: "+s + " age: "+ age);
+        System.out.println("正常请求到啦: "+s + " age: "+ age);
         return "test1";
     }
 
     @Override
     public String revertTest1(String s, Integer age) {
-        System.out.println("sdfds我异常回滚啦哈哈s: "+s + " age: "+ age);
-        return "    public String revertTest1(String s, Integer age) {\n";
+        System.out.println("异常回滚请求到啦: "+s + " age: "+ age);
+        return "revertTest1";
     }
 
     @Override

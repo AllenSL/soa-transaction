@@ -67,6 +67,7 @@ public class SOATransactionAspect {
                     SOATransactionContext.PerServiceContext contextHolder = contextHolders.get(i);
                     try {
                         Object target = applicationContext.getBean(contextHolder.getClz());
+                        LOG.debug("SOATransactionContext执行回滚请求目标类target: "+target +" 目标h回滚方法: "+contextHolder.getMethodName()+" 回滚方法入参: "+ contextHolder.getArgs());
                         MethodUtils.invokeMethod(target, contextHolder.getMethodName(), contextHolder.getArgs());
                     } catch (InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
