@@ -94,5 +94,4 @@ public class SOATransactionAspect {
             LOG.info("删除事务txId=【{}】数据成功",txId);
         }
     }
-
 }

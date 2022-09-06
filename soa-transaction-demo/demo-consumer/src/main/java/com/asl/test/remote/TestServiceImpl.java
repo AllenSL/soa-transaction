@@ -5,6 +5,7 @@ import com.asl.test.remote.service.TestService;
 import com.asl.test.service.RemoteTestService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
+import request.Test1Request;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -15,8 +16,9 @@ public class TestServiceImpl implements TestService {
     @Override
     @SOATransaction
     public String clientTest() {
-        String ssssss = remoteTestService.test1("方法1", 1);
-        remoteTestService.test2("方法2",2);
+        String ssssss = remoteTestService.m1("方法1", 1);
+        remoteTestService.m2("方法2",2);
+        remoteTestService.m3(new Test1Request("m3",30));
         int a = 2/0;
         return ssssss;
     }

@@ -46,6 +46,7 @@ public class SOATransactionFilter implements Filter {
             Class<?> clz = invoker.getInterface();
             String methodName = invocation.getMethodName();
             Object[] arguments = invocation.getArguments();
+            Class<?>[] parameterTypes = invocation.getParameterTypes();
             Method method = MethodUtils.getAccessibleMethod(clz, methodName, invocation.getParameterTypes());
 //            if(!method.isAnnotationPresent(SOACommit.class)){
 //                LOG.debug("soaTransaction Filter execute no soaTransaction method:【{}】",method.getName());
