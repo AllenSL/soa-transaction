@@ -21,7 +21,7 @@ public class RemoteTestServiceImpl implements RemoteTestService {
 
     @Override
     public String m2(String name, Integer age) {
-        System.out.println("m1正常调用成功 name: "+name + " age: "+ age);
+        System.out.println("m2正常调用成功 name: "+name + " age: "+ age);
         return "m2";
     }
 
@@ -41,5 +41,17 @@ public class RemoteTestServiceImpl implements RemoteTestService {
     public String revertm3(Test1Request test1Request) {
         System.out.println("revertm3异常回滚成功 request:: "+test1Request.toString());
         return "revertm3";
+    }
+
+    @Override
+    public String m4(String uuId, Test1Request test1Request) {
+        System.out.println("m4正常调用成功uuId::" +uuId+"request:: "+test1Request.toString());
+        return "m4";
+    }
+
+    @Override
+    public String revertm4(String uuId, Test1Request test1Request) {
+        System.out.println("revertm4异常回滚成功 uuId::"+uuId+ "request:: "+test1Request.toString());
+        return "revertm4";
     }
 }

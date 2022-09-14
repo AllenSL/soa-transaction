@@ -35,4 +35,14 @@ public interface RemoteTestService {
 
      @SOARollBack
      String revertm3(Test1Request test1Request);
+
+
+     @SOACommit(
+             rollBackMethod = "revertm4",
+             value = {0,1}
+     )
+     String m4(String uuId,Test1Request test1Request);
+
+     @SOARollBack
+     String revertm4(String uuId,Test1Request test1Request);
 }

@@ -1,6 +1,7 @@
 package com.asl.soatransaction.logic.spring;
 
 import com.asl.soatransaction.annotation.SOACommit;
+import com.asl.soatransaction.annotation.SOARollBack;
 import com.asl.soatransaction.annotation.SOAService;
 import com.asl.soatransaction.logic.SOARollbackMeta;
 import com.asl.soatransaction.logic.exp.SOATransactionException;
@@ -13,9 +14,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * dubbo接口调用类处理器
@@ -25,7 +24,14 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
 
     Logger LOGGER = LoggerFactory.getLogger(SOATransactionBeanProcessor.class);
     private ApplicationContext applicationContext;
+    /**
+     * method -> rollbackMeta
+     */
     public static final Map<Method,SOARollbackMeta> METHOD_ROLLBACK_MAPPING = new HashMap<>();
+    /**
+     * class ->(method -> parameterType)
+     */
+    public static final Map<Class<?>,Map<String,Class<?>[]>> CLASS_PARAMETERTYPE_MAPPING = new HashMap<>();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -55,6 +61,9 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
                                 SOARollbackMeta rollbackMeta = new SOARollbackMeta(cls,rollBackMethodName,value);
                                 METHOD_ROLLBACK_MAPPING.put(method,rollbackMeta);
                             }
+                            if(method.isAnnotationPresent(SOARollBack.class)){
+                                this.cacheClassAndMethodParameterTypes(method,cls);
+                            }
                         } catch (Exception e) {
                             LOGGER.error("dubbo interface parse error " + cls + "."+method,e);
                             throw new SOATransactionException(SOATransactionException.INTERFACE_PARSE_EXCEPTION,"dubbo interface parse error " + cls + "."+method,e);
@@ -62,6 +71,17 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
                     }
             }
         }
+    }
+
+
+    private void cacheClassAndMethodParameterTypes(Method method,Class<?> cls){
+        Map<String, Class<?>[]> cacheMap = CLASS_PARAMETERTYPE_MAPPING.get(cls);
+        if(ObjectUtils.isEmpty(cacheMap)){
+            cacheMap = new HashMap<>();
+        }
+        String methodName = method.getName();
+        cacheMap.put(methodName,method.getParameterTypes());
+        CLASS_PARAMETERTYPE_MAPPING.put(cls,cacheMap);
     }
 
 

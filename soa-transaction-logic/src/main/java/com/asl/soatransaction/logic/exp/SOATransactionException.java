@@ -25,6 +25,11 @@ public class SOATransactionException extends RuntimeException{
     public static final int UNKNOWN_ROLLBACK_META_EXCEPTION = 3;
 
     /**
+     * 待执行方法和参数不匹配异常
+     */
+    public static final int METHOD_PARAMETERS_NOT_MATCH_EXCEPTION = 4;
+
+    /**
      * RpcException cannot be extended, use error code for exception type to keep compatibility
      */
     private int code;

@@ -22,8 +22,8 @@ public class SOATransactionContext {
         this.contextHolders = contextHolders;
     }
 
-    public void addContextHolder(Class<?> clz,String methodName,Object[] args){
-        contextHolders.add(new PerServiceContext(clz,methodName,args));
+    public void addContextHolder(Class<?> clz,String methodName,Object[] args,Class<?>[] parameterTypes){
+        contextHolders.add(new PerServiceContext(clz,methodName,args,parameterTypes));
     }
 
     public static class PerServiceContext{
@@ -42,10 +42,16 @@ public class SOATransactionContext {
          */
         private Object[] args;
 
-        public PerServiceContext(Class<?> clz, String methodName, Object[] args) {
+        /**
+         *参数类型
+         */
+        private Class<?>[] parameterTypes;
+
+        public PerServiceContext(Class<?> clz, String methodName, Object[] args,Class<?>[] parameterTypes) {
             this.clz = clz;
             this.methodName = methodName;
             this.args = args;
+            this.parameterTypes = parameterTypes;
         }
 
         public Class<?> getClz() {
@@ -70,6 +76,14 @@ public class SOATransactionContext {
 
         public void setArgs(Object[] args) {
             this.args = args;
+        }
+
+        public Class<?>[] getParameterTypes() {
+            return parameterTypes;
+        }
+
+        public void setParameterTypes(Class<?>[] parameterTypes) {
+            this.parameterTypes = parameterTypes;
         }
     }
 

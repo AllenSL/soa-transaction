@@ -48,10 +48,6 @@ public class SOATransactionFilter implements Filter {
             Object[] arguments = invocation.getArguments();
             Class<?>[] parameterTypes = invocation.getParameterTypes();
             Method method = MethodUtils.getAccessibleMethod(clz, methodName, invocation.getParameterTypes());
-//            if(!method.isAnnotationPresent(SOACommit.class)){
-//                LOG.debug("soaTransaction Filter execute no soaTransaction method:【{}】",method.getName());
-//                return invoker.invoke(invocation);
-//            }
             SOARollbackMeta rollbackMeta = SOATransactionBeanProcessor.METHOD_ROLLBACK_MAPPING.get(method);
             if(ObjectUtils.isEmpty(rollbackMeta)){
                 throw new SOATransactionException(SOATransactionException.UNKNOWN_ROLLBACK_META_EXCEPTION,String.format("未找到soaTransaction方法:【%s】元数据",method));
@@ -70,10 +66,9 @@ public class SOATransactionFilter implements Filter {
             }else {
                  context = new SOATransactionContext();
             }
-            context.addContextHolder(clz,rollBackMethodName,params);
+            context.addContextHolder(clz,rollBackMethodName,params,parameterTypes);
             cacheWrapper.setex(txId,context,EXPIRE_TIME);
         }
         return invoker.invoke(invocation);
     }
-
 }
