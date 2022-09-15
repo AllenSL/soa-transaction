@@ -39,7 +39,7 @@ public interface RemoteTestService {
 
      @SOACommit(
              rollBackMethod = "revertm4",
-             value = {0,1}
+             value = {0}
      )
      String m4(String uuId,Test1Request test1Request);
 

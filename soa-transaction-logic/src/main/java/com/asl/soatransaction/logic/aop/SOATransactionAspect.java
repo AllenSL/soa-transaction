@@ -77,18 +77,7 @@ public class SOATransactionAspect {
                     try {
                         Object target = applicationContext.getBean(contextHolder.getClz());
                         LOG.debug("SOATransactionContext执行回滚请求目标类target: "+target +" 目标h回滚方法: "+contextHolder.getMethodName()+" 回滚方法入参: "+ contextHolder.getArgs());
-                        Object[] requestParams = new Object[args.length];
-                        for (int j = 0; j < args.length; j++) {
-                            Object arg = args[j];
-                            Class<?> aClass = classes[j];
-                            Object requestParam = null;
-                            if(!ClassUtils.isPrimitive(aClass)){
-                                 requestParam = JSONObject.parseObject(arg.toString(), aClass);
-                            }else {
-                                requestParam = arg;
-                            }
-                            requestParams[j] = requestParam;
-                        }
+                        Object[] requestParams = this.serializationParameter(args, classes);
                         invoker.invoke(target,rollBackMethodName, requestParams,txId);
                     } catch (SOATransactionException e) {
                         e.printStackTrace();
@@ -111,5 +100,28 @@ public class SOATransactionAspect {
             threadLocal.remove();
             LOG.info("删除事务txId=【{}】数据成功",txId);
         }
+    }
+
+
+    /**
+     * 序列化入参
+     * @param args
+     * @param classes
+     * @return
+     */
+    private Object[] serializationParameter(Object[] args,Class<?>[] classes){
+        Object[] requestParams = new Object[args.length];
+        for (int j = 0; j < args.length; j++) {
+            Object arg = args[j];
+            Class<?> aClass = classes[j];
+            Object requestParam = null;
+            if(!ClassUtils.isPrimitive(aClass)){
+                requestParam = JSONObject.parseObject(arg.toString(), aClass);
+            }else {
+                requestParam = arg;
+            }
+            requestParams[j] = requestParam;
+        }
+        return requestParams;
     }
 }

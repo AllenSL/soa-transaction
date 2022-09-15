@@ -57,6 +57,7 @@ public class SOATransactionBeanProcessor implements ApplicationContextAware {
                                 SOACommit annotation = method.getAnnotation(SOACommit.class);
                                 String rollBackMethodName = annotation.rollBackMethod();
                                 int[] value = annotation.value();
+                                // TODO 检查回滚入参和标记方法参数个数及类型是否一致
                                 this.checkRollMeta(rollBackMethodName);
                                 SOARollbackMeta rollbackMeta = new SOARollbackMeta(cls,rollBackMethodName,value);
                                 METHOD_ROLLBACK_MAPPING.put(method,rollbackMeta);
