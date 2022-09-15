@@ -47,6 +47,7 @@ public class SOATransactionAspect {
         //当前线程事务标记
         SOATransactionFlag flag = new SOATransactionFlag();
         threadLocal.set(flag);
+        //TODO 放入mq中防止应用down，请求丢失
     }
 
 
